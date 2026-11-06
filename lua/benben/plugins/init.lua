@@ -4,8 +4,32 @@
 
 vim.pack.add({
   -- theme
+  { src = "https://github.com/xiyaowong/transparent.nvim" },
+  { src = "https://github.com/sainnhe/everforest" },
+  { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
+  { src = "https://github.com/folke/tokyonight.nvim" },
+  { src = "https://github.com/sainnhe/sonokai" },
+  { src = "https://github.com/Mofiqul/dracula.nvim" },
+  { src = "https://github.com/craftzdog/solarized-osaka.nvim" },
+  { src = "https://github.com/EdenEast/nightfox.nvim" },
+  { src = "https://github.com/tjdevries/colorbuddy.nvim" },
+  { src = "https://github.com/2nthony/vitesse.nvim" },
+
   -- ui
+  { src = "https://github.com/nvim-mini/mini.icons" },
+  { src = "https://github.com/folke/snacks.nvim" },
+  { src = "https://github.com/akinsho/bufferline.nvim" },
+  { src = "https://github.com/folke/which-key.nvim" },
+  { src = "https://github.com/sphamba/smear-cursor.nvim" },
+
   -- editor
+
   -- coding
+
   -- git
 })
+
+-- Group files, in load order:
+require("benben.plugins.theme")
+require("benben.plugins.ui")
+require("benben.plugins.keymaps")
