@@ -157,7 +157,8 @@ agents (and future me) should read this file first.
 
   - oxfmt only runs when the project has an oxfmt config or a `vite.config.ts`
   - `:ToggleFormatter` turns format-on-save off/on for the current buffer
-- **mini.pairs** (insert + command mode, tuned skip rules)
+- **mini.pairs** (insert + command mode; upstream opts — LazyVim's extra skip
+  rules were LazyVim-internal, not mini.pairs features)
 - **ts-comments.nvim** for TSX/Vue comment strings
 - **inc-rename.nvim**: `<leader>cr` shows a live preview while renaming
 - LSP keymaps on attach: `gd` `gD` `gr` `gI` `gy` (through the picker where
@@ -216,3 +217,24 @@ OpenCode and the agent lands on the exact line.
   4. `dracula-soft` loads; switching colorschemes works
   5. Startup < 100 ms
   6. Published as https://github.com/benben6515/nvim
+
+## Notes from the build
+
+Facts discovered while implementing (kept here so future agents don't re-learn them):
+
+- **blink.cmp v2** needs the companion library `saghen/blink.lib` installed
+  alongside `saghen/blink.cmp`.
+- **nvim-treesitter main branch** has no `jsonc`/`scss` parsers (css/json cover
+  them); parsers install through `require("nvim-treesitter").install()` —
+  Neovim 0.12 has no built-in `vim.treesitter.language.install`.
+- The Vue server is **`vue_ls`** in current nvim-lspconfig (not `vuels`).
+- Mason's PATH prepend is not reliable at startup, so `config/options.lua`
+  prepends `stdpath("data")/mason/bin` itself.
+- **Headless quirk:** calling `conform.format()` synchronously from a `+lua`
+  command-line argument under `--headless` deadlocks (event-loop context).
+  Interactive use and `:w` (format-on-save) are unaffected — verified both.
+- Group files configure plugins imperatively (`require(...).setup({...})`).
+  There is no plugin spec interpreter: if a plugin is added to `vim.pack.add`,
+  its group file must also be required from `plugins/init.lua` (a missing
+  require fails silently — this bit once).
+
