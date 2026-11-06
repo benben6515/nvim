@@ -23,6 +23,11 @@ vim.pack.add({
   { src = "https://github.com/sphamba/smear-cursor.nvim" },
 
   -- editor
+  { src = "https://github.com/folke/flash.nvim" },
+  { src = "https://github.com/folke/trouble.nvim" },
+  { src = "https://github.com/gbprod/yanky.nvim" },
+  { src = "https://github.com/monaqa/dial.nvim" },
+  { src = "https://github.com/nvim-mini/mini.ai" },
 
   -- coding
 
@@ -32,4 +37,5 @@ vim.pack.add({
 -- Group files, in load order:
 require("benben.plugins.theme")
 require("benben.plugins.ui")
+require("benben.plugins.editor")
 require("benben.plugins.keymaps")

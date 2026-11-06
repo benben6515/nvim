@@ -108,6 +108,12 @@ return {
       input = { enabled = true },
       terminal = { enabled = true },
       statuscolumn = { enabled = true },
+      picker = {
+        enabled = true,
+        sources = {
+          explorer = { layout = { layout = { width = 32, min_width = 32 } } },
+        },
+      },
       dashboard = {
         preset = {
           header = header_logo,
