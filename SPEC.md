@@ -119,9 +119,10 @@ agents (and future me) should read this file first.
 ## 4. Syntax
 
 - **nvim-treesitter**, main branch. Parsers (installed via the FileType hook and
-  `vim.treesitter.language.install`): bash, css, diff, gitignore, html, javascript,
-  jsdoc, json, jsonc, lua, luadoc, luap, markdown, markdown_inline, python, query,
-  regex, scss, sql, toml, tsx, typescript, vim, vimdoc, vue, yaml
+  the plugin's `install()`): bash, css, diff, gitignore, html, javascript,
+  jsdoc, json, lua, luadoc, luap, markdown, markdown_inline, python, query,
+  regex, sql, toml, tsx, typescript, vim, vimdoc, vue, yaml
+  (jsonc/scss have no parser on the main branch; css/json cover them)
 - A FileType autocmd starts Treesitter highlight and Treesitter folds
   (`foldmethod=expr`, `foldlevel` 99 — everything starts unfolded)
 - `:TSUpdate` runs on the `PackChanged` event, so parsers stay in sync

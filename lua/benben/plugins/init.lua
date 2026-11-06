@@ -30,6 +30,7 @@ vim.pack.add({
   { src = "https://github.com/nvim-mini/mini.ai" },
 
   -- coding
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 
   -- git
 })

@@ -32,6 +32,13 @@ opt.softtabstop = 2
 opt.expandtab = true
 opt.smartindent = true
 
+-- Folds come from Treesitter (step 4); everything starts unfolded
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+
 -- Search: case-insensitive until a capital letter is typed
 opt.ignorecase = true
 opt.smartcase = true
