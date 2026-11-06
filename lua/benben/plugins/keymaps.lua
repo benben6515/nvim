@@ -218,3 +218,55 @@ end, { expr = true, desc = "Increment (sequential)" })
 map("v", "g<C-x>", function()
   return require("dial.map").dec_gvisual("augment")
 end, { expr = true, desc = "Decrement (sequential)" })
+
+-- git: signs, hunks, blame, stage (gitsigns)
+map("n", "]h", "<cmd>Gitsigns next_hunk<cr>", { desc = "Next Hunk" })
+map("n", "[h", "<cmd>Gitsigns prev_hunk<cr>", { desc = "Prev Hunk" })
+map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Blame Line" })
+map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
+map("n", "<leader>gh", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Stage Hunk" })
+map("n", "<leader>gH", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Reset Hunk" })
+map("n", "<leader>gs", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Stage Buffer" })
+
+-- git: inline working-tree diff (mini.diff)
+map("n", "<leader>gd", function()
+  require("mini.diff").toggle_overlay()
+end, { desc = "Toggle Diff Overlay" })
+
+-- git: lazygit floats
+map("n", "<leader>gg", function()
+  Snacks.lazygit({ cwd = root() })
+end, { desc = "Lazygit (root)" })
+map("n", "<leader>gG", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit (cwd)" })
+
+-- git: open the file as of the commit that last touched the current line
+map("n", "<leader>go", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    return
+  end
+  local rel = vim.fn.fnamemodify(file, ":.")
+  local line = vim.fn.line(".")
+  local blame = vim.system({ "git", "blame", "-L", line .. "," .. line, "--porcelain", rel }):wait(3000)
+  local sha = blame.code == 0 and blame.stdout:match("^(%x+)") or nil
+  if not sha then
+    Snacks.notify("git blame failed", vim.log.levels.ERROR)
+    return
+  end
+  local show = vim.system({ "git", "show", sha .. ":" .. rel }):wait(5000)
+  if show.code ~= 0 then
+    Snacks.notify("git show failed: " .. sha:sub(1, 7), vim.log.levels.ERROR)
+    return
+  end
+  local lines = vim.split(show.stdout or "", "\n")
+  vim.cmd("tabnew")
+  local buf = vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_buf_set_name(buf, sha:sub(1, 7) .. "-" .. vim.fs.basename(file))
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].readonly = true
+  vim.bo[buf].filetype = vim.filetype.match({ filename = vim.fs.basename(file), buf = buf }) or ""
+end, { desc = "Open File at Last Commit" })

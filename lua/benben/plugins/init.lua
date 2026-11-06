@@ -43,6 +43,8 @@ vim.pack.add({
   { src = "https://github.com/smjonas/inc-rename.nvim" },
 
   -- git
+  { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/nvim-mini/mini.diff" },
 })
 
 -- Group files, in load order:
@@ -50,4 +52,5 @@ require("benben.plugins.theme")
 require("benben.plugins.ui")
 require("benben.plugins.editor")
 require("benben.plugins.coding")
+require("benben.plugins.git")
 require("benben.plugins.keymaps")

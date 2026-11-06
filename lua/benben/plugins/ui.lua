@@ -100,6 +100,7 @@ require("snacks").setup({
   input = { enabled = true },
   terminal = { enabled = true },
   statuscolumn = { enabled = true },
+  lazygit = { enabled = true },
   picker = {
     enabled = true,
     sources = {
