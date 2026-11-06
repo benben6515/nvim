@@ -241,6 +241,38 @@ map("n", "<leader>gG", function()
   Snacks.lazygit()
 end, { desc = "Lazygit (cwd)" })
 
+-- agentic helpers: hand context from Neovim to a terminal agent (Claude Code /
+-- OpenCode). Pasting the path lands the agent on the exact line.
+local function copy_path_for_agent(absolute)
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    return
+  end
+  local path = absolute and file or vim.fn.fnamemodify(file, ":.")
+  local vline = vim.fn.getpos("v")[2]
+  local cline = vim.fn.getpos(".")[2]
+  local suffix
+  if vim.fn.mode():find("[vV]") and vline ~= cline then
+    local a, b = math.min(vline, cline), math.max(vline, cline)
+    suffix = "#L" .. a .. "-L" .. b
+  else
+    suffix = "#L" .. cline
+  end
+  local text = path .. suffix
+  vim.fn.setreg("+", text)
+  vim.fn.setreg('"', text)
+  Snacks.notify("Copied: " .. text)
+end
+map("n", "<leader>yf", function()
+  copy_path_for_agent(false)
+end, { desc = "Copy Relative Path#L for Agent" })
+map("n", "<leader>yp", function()
+  copy_path_for_agent(true)
+end, { desc = "Copy Absolute Path#L for Agent" })
+
+-- ZR restarts Neovim and restores the session (agent works in another terminal)
+map("n", "ZR", "<cmd>restart<cr>", { desc = "Restart Neovim" })
+
 -- git: open the file as of the commit that last touched the current line
 map("n", "<leader>go", function()
   local file = vim.api.nvim_buf_get_name(0)
