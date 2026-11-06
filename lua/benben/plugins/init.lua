@@ -31,6 +31,16 @@ vim.pack.add({
 
   -- coding
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/saghen/blink.lib" },
+  { src = "https://github.com/Saghen/blink.cmp" },
+  { src = "https://github.com/mason-org/mason.nvim" },
+  { src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/nvim-mini/mini.pairs" },
+  { src = "https://github.com/folke/ts-comments.nvim" },
+  { src = "https://github.com/folke/lazydev.nvim" },
+  { src = "https://github.com/smjonas/inc-rename.nvim" },
 
   -- git
 })
@@ -39,4 +49,5 @@ vim.pack.add({
 require("benben.plugins.theme")
 require("benben.plugins.ui")
 require("benben.plugins.editor")
+require("benben.plugins.coding")
 require("benben.plugins.keymaps")

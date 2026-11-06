@@ -55,6 +55,9 @@ opt.cmdheight = 2
 opt.undofile = true
 opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 
+-- Make Mason-installed binaries resolvable (vtsls etc. spawn from here)
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
+
 -- Yank and paste go through the system clipboard
 opt.clipboard = "unnamedplus"
 

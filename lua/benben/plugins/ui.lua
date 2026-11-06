@@ -1,3 +1,10 @@
+-- Icons: one source for every plugin (mini.icons mocks nvim-web-devicons)
+require("mini.icons").setup({})
+package.preload["nvim-web-devicons"] = function()
+  require("mini.icons").mock_nvim_web_devicons()
+  return package.loaded["nvim-web-devicons"]
+end
+
 -- Taiwan time (UTC+8), independent of the machine's timezone
 local function tw_hour()
   return os.date("!*t", os.time() + 8 * 3600).hour
@@ -82,119 +89,92 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 set_greeting_hl()
 
-return {
-  -- Icons: one source for every plugin (mini.icons mocks nvim-web-devicons)
-  {
-    "nvim-mini/mini.icons",
-    lazy = true,
-    init = function()
-      package.preload["nvim-web-devicons"] = function()
-        require("mini.icons").mock_nvim_web_devicons()
-        return package.loaded["nvim-web-devicons"]
-      end
+-- snacks.nvim: statusline, notifier, indent guides, scope, words, input,
+-- terminal, dashboard. picker/explorer joined in step 3, lazygit in step 6.
+require("snacks").setup({
+  statusline = { enabled = true },
+  notifier = { enabled = true },
+  indent = { enabled = true },
+  scope = { enabled = true },
+  words = { enabled = true }, -- needs LSP (step 5)
+  input = { enabled = true },
+  terminal = { enabled = true },
+  statuscolumn = { enabled = true },
+  picker = {
+    enabled = true,
+    sources = {
+      explorer = { layout = { layout = { width = 32, min_width = 32 } } },
+    },
+  },
+  dashboard = {
+    preset = {
+      header = header_logo,
+      keys = {
+        { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+        { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+        { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+        { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+        {
+          icon = " ",
+          key = "c",
+          desc = "Config",
+          action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+        },
+        { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+      },
+    },
+    sections = {
+      { header = header_logo, padding = 1 },
+      function()
+        return {
+          { text = { greeting(tw_hour()), hl = "SnacksDashboardGreeting" }, align = "center", padding = 1 },
+        }
+      end,
+      { section = "keys", gap = 1, padding = 1 },
+      { section = "startup" },
+    },
+  },
+})
+
+-- bufferline.nvim: <S-h>/<S-l> cycling, pins, close left/right
+require("bufferline").setup({
+  options = {
+    close_command = function(n)
+      Snacks.bufdelete(n)
     end,
-  },
-
-  -- snacks.nvim: statusline, notifier, indent guides, scope, words, input,
-  -- terminal, dashboard. picker/explorer join in step 3, lazygit in step 6.
-  {
-    "folke/snacks.nvim",
-    opts = {
-      statusline = { enabled = true },
-      notifier = { enabled = true },
-      indent = { enabled = true },
-      scope = { enabled = true },
-      words = { enabled = true }, -- needs LSP (step 5)
-      input = { enabled = true },
-      terminal = { enabled = true },
-      statuscolumn = { enabled = true },
-      picker = {
-        enabled = true,
-        sources = {
-          explorer = { layout = { layout = { width = 32, min_width = 32 } } },
-        },
-      },
-      dashboard = {
-        preset = {
-          header = header_logo,
-          keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            {
-              icon = " ",
-              key = "c",
-              desc = "Config",
-              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-            },
-            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-          },
-        },
-        sections = {
-          { header = header_logo, padding = 1 },
-          function()
-            return {
-              { text = { greeting(tw_hour()), hl = "SnacksDashboardGreeting" }, align = "center", padding = 1 },
-            }
-          end,
-          { section = "keys", gap = 1, padding = 1 },
-          { section = "startup" },
-        },
-      },
+    right_mouse_command = function(n)
+      Snacks.bufdelete(n)
+    end,
+    diagnostics = "nvim_lsp",
+    always_show_bufferline = false,
+    diagnostics_indicator = function(_, _, diag)
+      local ret = (diag.error and " " .. diag.error .. " " or "") .. (diag.warning and " " .. diag.warning or "")
+      return vim.trim(ret)
+    end,
+    offsets = {
+      { filetype = "snacks_layout_box" }, -- snacks explorer sidebar
     },
   },
+})
 
-  -- bufferline.nvim: <S-h>/<S-l> cycling, pins, close left/right
-  {
-    "akinsho/bufferline.nvim",
-    opts = {
-      options = {
-        close_command = function(n)
-          Snacks.bufdelete(n)
-        end,
-        right_mouse_command = function(n)
-          Snacks.bufdelete(n)
-        end,
-        diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
-        diagnostics_indicator = function(_, _, diag)
-          local ret = (diag.error and " " .. diag.error .. " " or "")
-            .. (diag.warning and " " .. diag.warning or "")
-          return vim.trim(ret)
-        end,
-        offsets = {
-          { filetype = "snacks_layout_box" }, -- snacks explorer sidebar
-        },
-      },
-    },
+-- which-key.nvim: discoverability for the <leader> tree
+require("which-key").setup({
+  spec = {
+    { "<leader>b", group = "buffer" },
+    { "<leader>c", group = "code" },
+    { "<leader>f", group = "find" },
+    { "<leader>g", group = "git" },
+    { "<leader>u", group = "ui" },
+    { "<leader>w", group = "windows" },
+    { "<leader><tab>", group = "tab" },
   },
+})
 
-  -- which-key.nvim: discoverability for the <leader> tree
-  {
-    "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<leader>b", group = "buffer" },
-        { "<leader>c", group = "code" },
-        { "<leader>f", group = "find" },
-        { "<leader>g", group = "git" },
-        { "<leader>u", group = "ui" },
-        { "<leader>w", group = "windows" },
-        { "<leader><tab>", group = "tab" },
-      },
-    },
-  },
-
-  -- smear-cursor.nvim: cursor smear between buffers, lines and in insert mode
-  {
-    "sphamba/smear-cursor.nvim",
-    opts = {
-      smear_between_buffers = true,
-      smear_between_neighbor_lines = true,
-      scroll_buffer_space = true,
-      legacy_computing_symbols_support = false,
-      smear_insert_mode = true,
-    },
-  },
-}
+-- smear-cursor.nvim: cursor smear between buffers, lines and in insert mode
+require("smear_cursor").setup({
+  smear_between_buffers = true,
+  smear_between_neighbor_lines = true,
+  scroll_buffer_space = true,
+  legacy_computing_symbols_support = false,
+  smear_insert_mode = true,
+})
