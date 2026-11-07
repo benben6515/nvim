@@ -137,6 +137,29 @@ require("snacks").setup({
   },
 })
 
+-- netrw is off: opening a directory (`nvim .`, `:e some/dir`) swaps to the
+-- snacks explorer. VimEnter/UIEnter do NOT fire for directory args, so this
+-- hooks the one event that does.
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("benben_explorer_dir", { clear = true }),
+  callback = function(args)
+    local name = args.file
+    if name == "" or vim.fn.isdirectory(name) ~= 1 then
+      return
+    end
+    -- guard against re-processing (the explorer itself enters BufEnter too)
+    if vim.b[args.buf].benben_dir_handled or vim.bo[args.buf].filetype == "snacks_picker_list" then
+      return
+    end
+    vim.b[args.buf].benben_dir_handled = true
+    vim.cmd.cd(name)
+    Snacks.explorer.open()
+    vim.schedule(function()
+      pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
+    end)
+  end,
+})
+
 -- bufferline.nvim: <S-h>/<S-l> cycling, pins, close left/right
 require("bufferline").setup({
   options = {

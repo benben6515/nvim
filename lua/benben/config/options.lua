@@ -6,6 +6,9 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = " "
 
+-- netrw off: `nvim .` opens the snacks explorer instead (see ui.lua)
+g.loaded_netrw = 1
+
 -- Make the terminal tab show the file name
 opt.title = true
 
