@@ -135,7 +135,7 @@ require("snacks").setup({
         }
       end,
       { section = "keys", gap = 1, padding = 1 },
-      { section = "startup" },
+      -- no "startup" section: it requires lazy.nvim's stats module
     },
   },
 })
