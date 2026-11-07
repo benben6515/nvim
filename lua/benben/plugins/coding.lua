@@ -81,30 +81,35 @@ vim.defer_fn(function()
   })
 end, 100)
 
--- mason: installs language servers and formatters, never auto-updates
-require("mason").setup({})
+-- mason: installs language servers and formatters, never auto-updates.
+-- setup deferred ~200ms: nothing needs mason that early (the mason bin PATH
+-- prepend lives in config/options.lua, independent of this setup)
+vim.defer_fn(function()
+  require("mason").setup({})
 
--- mason-tool-installer: the toolchain, installed on start
-require("mason-tool-installer").setup({
-  ensure_installed = {
-    "lua-language-server",
-    "vtsls",
-    "eslint-lsp",
-    "tailwindcss-language-server",
-    "vue-language-server",
-    "pyright",
-    "marksman",
-    "json-lsp",
-    "taplo",
-    "prettierd",
-    "oxfmt",
-    "stylua",
-    "shfmt",
-    "sqlfluff",
-  },
-  run_on_start = true,
-  start_delay = 2000,
-})
+  -- mason-tool-installer: the toolchain, installed on start (defer_fn inside,
+  -- so this is safe to call late)
+  require("mason-tool-installer").setup({
+    ensure_installed = {
+      "lua-language-server",
+      "vtsls",
+      "eslint-lsp",
+      "tailwindcss-language-server",
+      "vue-language-server",
+      "pyright",
+      "marksman",
+      "json-lsp",
+      "taplo",
+      "prettierd",
+      "oxfmt",
+      "stylua",
+      "shfmt",
+      "sqlfluff",
+    },
+    run_on_start = true,
+    start_delay = 2000,
+  })
+end, 200)
 
 -- nvim-lspconfig: server defaults; turning them on is one line (0.12)
 vim.lsp.enable({ "lua_ls", "vtsls", "eslint", "tailwindcss", "vue_ls", "pyright", "marksman", "jsonls", "taplo" })
