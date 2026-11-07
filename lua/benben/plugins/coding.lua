@@ -65,18 +65,21 @@ do
 end
 
 -- blink.cmp: completion. Enter accepts, docs after 200ms, auto-brackets,
--- ghost text off (no AI completions to clash with)
-require("blink.cmp").setup({
-  keymap = { preset = "enter" },
-  completion = {
-    ghost_text = { enabled = false },
-    documentation = { auto_show = true, auto_show_delay_ms = 200 },
-    accept = { auto_brackets = { enabled = true } },
-  },
-  signature = { enabled = true },
-  cmdline = { enabled = true },
-  sources = { default = { "lsp", "path", "snippets", "buffer" } },
-})
+-- ghost text off (no AI completions to clash with).
+-- setup deferred ~100ms: nothing types that fast, saves ~9ms off startup
+vim.defer_fn(function()
+  require("blink.cmp").setup({
+    keymap = { preset = "enter" },
+    completion = {
+      ghost_text = { enabled = false },
+      documentation = { auto_show = true, auto_show_delay_ms = 200 },
+      accept = { auto_brackets = { enabled = true } },
+    },
+    signature = { enabled = true },
+    cmdline = { enabled = true },
+    sources = { default = { "lsp", "path", "snippets", "buffer" } },
+  })
+end, 100)
 
 -- mason: installs language servers and formatters, never auto-updates
 require("mason").setup({})

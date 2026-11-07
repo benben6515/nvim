@@ -42,14 +42,9 @@ require("transparent").clear_prefix("BufferLine")
 require("transparent").clear_prefix("NeoTree")
 require("transparent").clear_prefix("RenderMarkdown")
 
--- Local theme: neon cyberpunk I wrote (lua/benben/colors/benben.lua)
-require("benben.colors.benben").load()
+-- Local theme: neon cyberpunk I wrote — loads via :colorscheme benben
+-- (colors/benben.lua shim); not loaded at startup since dracula-soft is default
 vim.cmd.colorscheme("dracula-soft")
-
--- vitesse needs its setup call to define the colorscheme
-pcall(function()
-  require("vitesse").setup({})
-end)
 
 -- Brighten dim UI lines: dracula/catppuccin pick near-invisible greys on the
 -- transparent near-black terminal bg
