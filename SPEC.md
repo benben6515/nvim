@@ -82,8 +82,9 @@ agents (and future me) should read this file first.
 - **Legibility overrides** for WinSeparator/LineNr/etc. re-applied after every
   colorscheme switch back to dracula/catppuccin (they set near-invisible greys).
 - **snacks.nvim** provides: statusline, notifier, indent guides, scope, words
-  (needs LSP, works from step 5), input, terminal, and the dashboard
-  (custom ASCII header + Taiwan-time greeting pool, ported from the old config).
+  (needs LSP, works from step 5), input, terminal, smooth scroll, bigfile and
+  quickfile protection, and the lazygit float (step 6).
+- No dashboard: `nvim` with no file shows vanilla nvim's intro screen.
 - **bufferline.nvim** with `<S-h>`/`<S-l>`, `[b`/`]b`, `[B`/`]B`, pin and
   close-left/right keys — closes go through `Snacks.bufdelete`.
 - **which-key.nvim** for discoverability.
