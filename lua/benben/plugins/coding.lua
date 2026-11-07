@@ -108,9 +108,9 @@ vim.lsp.enable({ "lua_ls", "vtsls", "eslint", "tailwindcss", "vue_ls", "pyright"
 
 -- conform: format on save, 1000ms timeout, LSP fallback
 local conform = require("conform")
--- oxfmt only when the project opted into it
+-- oxfmt only when the project opted into it (conform calls condition(self, ctx))
 conform.formatters.oxfmt = {
-  condition = function(ctx)
+  condition = function(self, ctx)
     return vim.fs.root(ctx.filename, { ".oxfmtrc.json", ".oxfmtrc", "vite.config.ts" }) ~= nil
   end,
 }
