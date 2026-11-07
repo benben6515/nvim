@@ -135,7 +135,17 @@ require("snacks").setup({
         }
       end,
       { section = "keys", gap = 1, padding = 1 },
-      -- no "startup" section: it requires lazy.nvim's stats module
+      -- real config load time (uv.hrtime delta from init.lua), no lazy.stats
+      function()
+        local ms = (vim.uv.hrtime() - (vim.g.benben_t0 or 0)) / 1e6
+        return {
+          {
+            text = { ("⚡ loaded in %.1f ms"):format(ms), hl = "SnacksDashboardSpecial" },
+            align = "center",
+            padding = 1,
+          },
+        }
+      end,
     },
   },
 })
