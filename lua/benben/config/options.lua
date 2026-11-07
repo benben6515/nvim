@@ -78,3 +78,18 @@ vim.diagnostic.config({
 
 -- Neovim 0.12 experimental message/commandline UI (ui2)
 require("vim._core.ui2").enable()
+
+-- Route vim.ui through snacks (checkhealth: input + select)
+vim.ui.input = function(opts, on_confirm)
+  Snacks.input(opts, on_confirm)
+end
+vim.ui.select = function(items, opts, on_choice)
+  Snacks.picker.select(items, opts, on_choice)
+end
+
+-- Remote-plugin providers unused here; disabling silences checkhealth and
+-- skips the provider searches at startup
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0

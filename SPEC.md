@@ -235,6 +235,14 @@ Facts discovered while implementing (kept here so future agents don't re-learn t
 - The Vue server is **`vue_ls`** in current nvim-lspconfig (not `vuels`).
 - Mason's PATH prepend is not reliable at startup, so `config/options.lua`
   prepends `stdpath("data")/mason/bin` itself.
+- **Treesitter queries are symlinks.** nvim-treesitter main ships queries in
+  its own `runtime/queries/` and links them into `stdpath("data")/site/queries`.
+  The links survive parser installs but pointed at the old lazy.nvim path once
+  — after moving plugin managers, re-link `site/queries/<lang>` to the new
+  plugin's `runtime/queries/<lang>` or every non-bundled language silently
+  loses syntax highlighting while `vim.treesitter.start` still "works".
+- blink.cmp ships a Lua fuzzy fallback; build the native matcher once with
+  `require("blink.cmp").build():pwait()` (done; `:checkhealth blink.cmp` confirms).
 - **Headless quirk:** calling `conform.format()` synchronously from a `+lua`
   command-line argument under `--headless` deadlocks (event-loop context).
   Interactive use and `:w` (format-on-save) are unaffected — verified both.

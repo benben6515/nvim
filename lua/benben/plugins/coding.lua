@@ -40,8 +40,10 @@ do
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("benben_treesitter", { clear = true }),
     callback = function(args)
-      if pcall(vim.treesitter.language.inspect, args.match) then
-        pcall(vim.treesitter.start, args.buf)
+      -- filetype ≠ parser language (sh→bash, js→javascript...); map first
+      local lang = vim.treesitter.language.get_lang(args.match) or args.match
+      if pcall(vim.treesitter.language.inspect, lang) then
+        pcall(vim.treesitter.start, args.buf, lang)
       end
     end,
   })

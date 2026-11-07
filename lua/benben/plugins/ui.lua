@@ -101,6 +101,9 @@ require("snacks").setup({
   terminal = { enabled = true },
   statuscolumn = { enabled = true },
   lazygit = { enabled = true },
+  scroll = { enabled = true }, -- smooth scroll, kept from the LazyVim days
+  bigfile = { enabled = true }, -- heavy features off in huge files
+  quickfile = { enabled = true }, -- render files while still loading
   picker = {
     enabled = true,
     sources = {
