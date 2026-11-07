@@ -1,3 +1,5 @@
+[ [English](README.md) | [繁體中文](README.tw.md) ]
+
 # benben's Neovim config
 
 A from-scratch Neovim setup for agentic coding, built on **Neovim 0.12 built-ins**:
