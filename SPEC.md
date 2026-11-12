@@ -242,8 +242,12 @@ Facts discovered while implementing (kept here so future agents don't re-learn t
   — after moving plugin managers, re-link `site/queries/<lang>` to the new
   plugin's `runtime/queries/<lang>` or every non-bundled language silently
   loses syntax highlighting while `vim.treesitter.start` still "works".
-- blink.cmp ships a Lua fuzzy fallback; build the native matcher once with
-  `require("blink.cmp").build():pwait()` (done; `:checkhealth blink.cmp` confirms).
+- blink.cmp is pinned to the latest stable tag (`version = vim.version.range("*")`):
+  the prebuilt-binary download requires HEAD to sit exactly on a git tag, and
+  an unpinned `vim.pack` clone (floating on main) silently fails to download.
+  The native library auto-downloads during `setup()` into
+  `target/release/libblink_cmp_fuzzy.so`; `:checkhealth blink.cmp` confirms.
+  `saghen/blink.lib` is only needed by the V2 dev branch, not by stable.
 - **Headless quirk:** calling `conform.format()` synchronously from a `+lua`
   command-line argument under `--headless` deadlocks (event-loop context).
   Interactive use and `:w` (format-on-save) are unaffected — verified both.
