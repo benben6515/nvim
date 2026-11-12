@@ -45,6 +45,15 @@ Neovim 0.12+、Nerd Font、`git`、`tree-sitter` CLI + C 編譯器（parser 在�
 編譯）、`node`（Mason 用）、`rg`/`fd`（picker 用）、`lazygit`（浮動視窗，
 `<leader>gg`）。
 
+## 從其他設定遷移
+
+替換 `~/.config/nvim` 或 `~/.local/share/nvim` **之前，先把所有執行中的
+nvim 全部關掉**（逐一 `:qa!`，保險起見再 `pkill nvim`）。執行中的 nvim 把
+舊設定和外掛留在記憶體裡；一旦那些路徑被搬走，它就會整個卡死——按鍵無反應、
+連 `:qa!` 都叫不動，只能把該終端機砍掉。首次啟動若 parser 編譯失敗（缺
+`tree-sitter` CLI），裝好（`brew install tree-sitter-cli`）再重開 nvim 即可；
+blink.cmp 的 native fuzzy library 在鎖定的 stable tag 上會於首次啟動自動下載。
+
 ## 重點特色
 
 - 10 套 colorscheme（預設 `dracula-soft`）+ 透明背景 + 按 `<leader>uC` 開啟

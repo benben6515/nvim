@@ -45,6 +45,17 @@ Neovim 0.12+, a Nerd Font, `git`, `tree-sitter` CLI + C compiler (parsers
 compile locally), `node` (Mason), `rg`/`fd` (picker), `lazygit` (float at
 `<leader>gg`).
 
+## Migrating from another config
+
+Quit **every running nvim instance before swapping** `~/.config/nvim` or
+`~/.local/share/nvim` (`:qa!` everywhere, then `pkill nvim` to be sure). A
+running nvim keeps its old config and plugins in memory; once their paths
+move out from under it, it wedges — keys stop responding and even `:qa!`
+won't answer, so the only way out is killing its terminal. If parsers fail
+to compile on first start (`tree-sitter` CLI missing), install it
+(`brew install tree-sitter-cli`) and start nvim again; blink.cmp's native
+fuzzy lib builds itself on first start from the pinned stable tag.
+
 ## Highlights
 
 - 10 colorschemes (default `dracula-soft`) + transparent backgrounds + a
