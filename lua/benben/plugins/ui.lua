@@ -24,7 +24,34 @@ require("snacks").setup({
   picker = {
     enabled = true,
     sources = {
-      explorer = { layout = { layout = { width = 32, min_width = 32 } } },
+      explorer = {
+        layout = { layout = { width = 32, min_width = 32 } },
+        on_show = function(picker)
+          -- after `nvim ./some/dir` the main window only holds the empty
+          -- buffer left by the deleted dir arg: close it so the explorer
+          -- takes the full frame. A real file in main is left untouched.
+          local main = picker.main
+          local b = main and vim.api.nvim_win_is_valid(main) and vim.api.nvim_win_get_buf(main)
+          if b
+            and vim.bo[b].buftype == ""
+            and vim.api.nvim_buf_get_name(b) == ""
+            and not vim.bo[b].modified then
+            pcall(vim.api.nvim_win_close, main, false)
+            pcall(vim.api.nvim_buf_delete, b, { force = true })
+          end
+          -- the list buffer is unnamed, so the statusline renders it as
+          -- [Scratch]; name it
+          local list = picker.list and picker.list.win
+          if list and list:valid() then
+            local lb = list.buf
+            if lb and vim.api.nvim_buf_get_name(lb) == "" then
+              pcall(vim.api.nvim_buf_set_name, lb, "Explorer")
+            end
+          end
+          -- closing main may drop keyboard focus outside the picker
+          picker:focus("input")
+        end,
+      },
     },
   },
 })
@@ -46,6 +73,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.b[args.buf].benben_dir_handled = true
     vim.cmd.cd(name)
     Snacks.explorer.open()
+    -- the explorer's on_show closes the leftover empty window
     vim.schedule(function()
       pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
     end)

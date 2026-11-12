@@ -111,7 +111,11 @@ agents (and future me) should read this file first.
 - File explorer: **snacks.explorer** (sidebar, width 32) — already my picker of
   choice in LazyVim; oil.nvim can wait until I actually miss it.
 - **netrw is off** (`vim.g.loaded_netrw`): opening nvim with a directory
-  (`nvim .`) or `:e some/dir` swaps straight into the explorer sidebar.
+  (`nvim .`) or `:e some/dir` swaps straight into the explorer. When the
+  directory was the launch argument, the explorer takes the whole frame: its
+  `on_show` closes the empty main window the dir buffer left behind (a real
+  file window is kept), and the picker's list buffer is named `Explorer` so
+  the statusline doesn't read `[Scratch]`.
   Gotcha recorded the hard way: with netrw disabled, directory-arg startups
   fire **no VimEnter/UIEnter** — the swap hooks `BufEnter` (the only event
   that fires) and deletes the raw directory buffer after opening the sidebar.
