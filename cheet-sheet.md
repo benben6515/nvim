@@ -91,6 +91,37 @@
 - `<C-/>` 浮層 terminal 跑 agent，`<leader>ft` 開在 cwd
 - `ZR` 重啟 nvim 還原 session — 改完 config 不用重開工作區
 
+## 9. 分割視窗（少用，易忘）
+
+Config map 的：
+
+- `<leader>-` 上開、`<leader>|` 右開
+- `<C-h/j/k/l>` 跳視窗（h 左 j 下 k 上 l 右）
+- `<leader>wd` 關視窗（buffer 還在）
+
+原生 `<C-w>` 系列：
+
+| Keys | Action |
+| --- | --- |
+| `<C-w>=` | 全部等分 — 亂完一鍵復原 |
+| `<C-w>_` / `<C-w>\|` | 撐滿高 / 撐滿寬 |
+| `<C-w>+` / `<C-w>-` | 高度增減（`5<C-w>+` 次數） |
+| `<C-w>>` / `<C-w><` | 寬度增減 |
+| `<C-w>r` / `<C-w>x` | 輪轉位置 / 與隔壁交換 |
+| `<C-w>H/j/k/l`（大寫） | 丟到該邊 — 改佈局最快 |
+| `<C-w>o` | 只留目前視窗 |
+| `<C-w>T` | 變成 tab |
+
+- `:resize 20`、`:vertical resize 90` 精確設值
+- `:vertical` 前綴讓任何命令左右開（`:vertical help x`）
+- 概念：視窗是觀景窗，buffer 是檔案。一個 buffer 可多視窗同時看
+  （`:split` 後 `<leader>,` 選同一檔）；`<leader>bd` 關 buffer 會空掉所有顯示它的視窗
+
+慣用流程：
+
+- 審 code：左 code 右 explorer（`<leader>e`），下方 terminal
+- 對照兩檔：`<leader>|` 開右側 → `<leader>,` 選檔 → `<C-w>=`
+
 ## 練法建議
 
 一週只練一組：先 flash operator（`ds`/`ys`/`vs`），再 mini.ai 組合
