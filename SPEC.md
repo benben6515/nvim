@@ -74,7 +74,7 @@ agents (and future me) should read this file first.
 ## 2. Look
 
 - **Colorschemes** — 10 of them, ported from the old config; switch freely:
-  dracula (default active: `dracula-soft`), everforest, catppuccin, tokyonight,
+  everforest (default active), dracula (`dracula-soft`), catppuccin, tokyonight,
   sonokai, solarized-osaka, nightfox, vitesse (+ colorbuddy), and `benben` —
   a local neon-cyberpunk theme I wrote.
 - **transparent.nvim**: backgrounds clear so the terminal's blur shows through.

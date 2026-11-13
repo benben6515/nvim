@@ -1,4 +1,4 @@
--- Colorschemes: 10 of them, switch freely. Default: dracula-soft.
+-- Colorschemes: 10 of them, switch freely. Default: everforest.
 
 -- Theme-agnostic italics/styles (read when the colorscheme loads)
 vim.g.everforest_enable_italic = true
@@ -43,8 +43,8 @@ require("transparent").clear_prefix("NeoTree")
 require("transparent").clear_prefix("RenderMarkdown")
 
 -- Local theme: neon cyberpunk I wrote — loads via :colorscheme benben
--- (colors/benben.lua shim); not loaded at startup since dracula-soft is default
-vim.cmd.colorscheme("dracula-soft")
+-- (colors/benben.lua shim); not loaded at startup since everforest is default
+vim.cmd.colorscheme("everforest")
 
 -- Brighten dim UI lines: dracula/catppuccin pick near-invisible greys on the
 -- transparent near-black terminal bg
