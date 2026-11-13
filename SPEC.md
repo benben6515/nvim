@@ -121,6 +121,8 @@ agents (and future me) should read this file first.
 - **yanky.nvim**: `<p>` / `<P>` put with yank ring, `[y` / `]y` cycle
 - **dial.nvim**: `<C-a>` / `<C-x>` (and `g`-prefixed) smart increment
 - **mini.ai**: treesitter-aware text objects (`f` function, `c` class, `o` block...)
+- **mini.surround**: `gsa` add, `gsd` delete, `gsr` replace, `gsf`/`gsF` find,
+  `gsh` highlight, `gsn` n-lines (LazyVim keymaps)
 
 ## 4. Syntax
 

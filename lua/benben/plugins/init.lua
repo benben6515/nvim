@@ -28,6 +28,7 @@ vim.pack.add({
   { src = "https://github.com/gbprod/yanky.nvim" },
   { src = "https://github.com/monaqa/dial.nvim" },
   { src = "https://github.com/nvim-mini/mini.ai" },
+  { src = "https://github.com/nvim-mini/mini.surround" },
 
   -- coding
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
