@@ -2,6 +2,7 @@
 
 -- Theme-agnostic italics/styles (read when the colorscheme loads)
 vim.g.everforest_enable_italic = true
+vim.g.everforest_background = "soft"
 vim.g.sonokai_enable_italic = true
 vim.g.sonokai_style = "atlantis"
 vim.g.sonokai_better_performance = 1
